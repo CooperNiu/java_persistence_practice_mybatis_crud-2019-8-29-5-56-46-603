@@ -5,7 +5,8 @@
         select * from `employee`;
     </select>
 
-    <insert id="insert">
+    <insert id="insert"
+            >
         insert into `employee` (id, name, age)
         values(#{employee.id}, #{employee.name}, #{employee.age});
     </insert>
@@ -21,9 +22,4 @@
         `age` = #{employee.age},
         where 1 and id = #{id};
     </update>
-
-    <delete id="deleteOne">
-        delete from employee
-        where id = #{id};
-    </delete>
 </mapper>
