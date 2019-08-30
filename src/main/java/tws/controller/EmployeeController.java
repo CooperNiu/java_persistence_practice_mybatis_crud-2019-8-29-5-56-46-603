@@ -58,4 +58,9 @@ public class EmployeeController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<Employee> queryEmployees (@RequestParam String name) {
+        Employee employee = employeeService.select(name);
+        return ResponseEntity.ok(employee);
+    }
 }

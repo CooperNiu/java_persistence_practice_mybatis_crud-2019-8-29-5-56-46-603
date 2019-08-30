@@ -3,10 +3,6 @@
 <mapper namespace="tws.repository.EmployeeMapper">
     <select id="selectAll" resultType="tws.entity.Employee">
         select * from `employee`;
-        <if test="keyword != null">
-            <bind name="pattern" value="'%' + keyword + '%'"/>
-            where `name` like #{pattern}
-        </if>
     </select>
 
     <insert id="addEmploy" parameterType="tws.entity.Employee">
@@ -53,5 +49,15 @@
         select * from employee
         ORDER BY name
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY;
+    </select>
+
+    <select id="select" parameterType="java.lang.String" resultType="tws.entity.Employee">
+        select * from employee
+        <where>
+            <if test="name != null">
+              <bind name="pattern" value="'%'+name+'%'"></bind>
+                name like #{pattern}
+            </if>
+        </where>
     </select>
 </mapper>

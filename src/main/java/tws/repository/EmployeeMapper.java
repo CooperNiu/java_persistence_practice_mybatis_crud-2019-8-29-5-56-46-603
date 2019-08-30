@@ -19,4 +19,6 @@ public interface EmployeeMapper {
     void deleteOne(@Param("id") String id);
 
     List<Employee> selectWithPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    Employee select(@Param("name") String name);
 }

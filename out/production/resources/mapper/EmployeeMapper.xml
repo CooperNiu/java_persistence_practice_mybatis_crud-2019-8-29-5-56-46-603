@@ -50,4 +50,14 @@
         ORDER BY name
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY;
     </select>
+
+    <select id="select" parameterType="java.lang.String" resultType="tws.entity.Employee">
+        select * from employee
+        <where>
+            <if test="name != null">
+              <bind name="pattern" value="'%'+name+'%'"></bind>
+                name like #{pattern}
+            </if>
+        </where>
+    </select>
 </mapper>
