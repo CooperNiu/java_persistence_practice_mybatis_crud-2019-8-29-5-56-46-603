@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class Employee implements Serializable {
     private String id;
     private String name;
-    private String age;
+    private int age;
 
     public Employee() {
 
     }
 
-    public Employee(String id, String name, String age) {
+    public Employee(String id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -33,11 +33,11 @@ public class Employee implements Serializable {
         this.name = name;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

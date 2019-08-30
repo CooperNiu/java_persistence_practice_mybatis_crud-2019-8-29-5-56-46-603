@@ -3,27 +3,55 @@
 <mapper namespace="tws.repository.EmployeeMapper">
     <select id="selectAll" resultType="tws.entity.Employee">
         select * from `employee`;
+        <if test="keyword != null">
+            <bind name="pattern" value="'%' + keyword + '%'"/>
+            where `name` like #{pattern}
+        </if>
     </select>
 
-    <insert id="insert">
-        insert into `employee` (id, name, age)
-        values(#{employee.id}, #{employee.name}, #{employee.age});
+    <insert id="addEmploy" parameterType="tws.entity.Employee">
+        insert into `employee` values (#{id},#{name},#{age});
     </insert>
 
-    <select id="selectOne" resultType="tws.entity.Employee">
-        select * from `employee` where id = #{id};
+    <select id="selectSome" parameterType="java.lang.String" resultType="tws.entity.Employee">
+        select * from employee
+        <if test="id != null">
+          <where>
+              id = #{id}
+          </where>
+        </if>
+        <if test="name != null">
+            <where>
+                name like %#{name}%
+            </where>
+        </if>
     </select>
 
-    <update id="updateOne">
-        update `employee`
-        set
-        `name` = #{employee.name},
-        `age` = #{employee.age},
-        where 1 and id = #{id};
+    <update id="updateOne" parameterType="tws.entity.Employee">
+        update employee
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="age != 0">
+                age = #{age}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
     </update>
 
-    <delete id="deleteOne">
+    <delete id="deleteOne" parameterType="java.lang.String">
         delete from employee
-        where id = #{id};
+        <where>
+            id = #{id}
+        </where>
     </delete>
+
+    <select id="selectWithPage" parameterType="java.lang.Integer" resultType="tws.entity.Employee">
+        select * from employee
+        ORDER BY name
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY;
+    </select>
 </mapper>

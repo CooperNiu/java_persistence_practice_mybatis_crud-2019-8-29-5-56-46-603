@@ -10,18 +10,13 @@ import java.util.List;
 public interface EmployeeMapper {
     List<Employee> selectAll();
 
-    void insert(@Param("employee") Employee employee);
+    void addEmploy(Employee employee);
 
-    void addEmployee(@Param("employee") Employee employee);
+    List<Employee> selectSome(@Param("id") String id, @Param("name") String name);
 
-    Employee selectOne(@Param("id") String id);
+    void updateOne(Employee employee);
 
-    void updateOne(
-            @Param("id") String id,
-            @Param("employee") Employee employee
-    );
+    void deleteOne(@Param("id") String id);
 
-    void deleteOne(String id);
-
-
+    List<Employee> selectWithPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }

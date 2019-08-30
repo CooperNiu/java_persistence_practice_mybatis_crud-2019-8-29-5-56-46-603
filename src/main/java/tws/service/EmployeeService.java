@@ -2,24 +2,32 @@ package tws.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tws.dto.EmployeeDTO;
+import tws.dto.EmployeeDto;
 import tws.entity.Employee;
 import tws.repository.EmployeeMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
     @Autowired
     private EmployeeMapper employeeMapper;
+    public List<EmployeeDto> selectSome(String id, String name) {
+        List<Employee> employees = employeeMapper.selectSome(id,name);
+        List<EmployeeDto> employeeDtoList = new ArrayList<>();
+        for(Employee employee : employees) {
+            EmployeeDto employeeDto = new EmployeeDto();
+            employeeDto.setId(employee.getId());
+            employeeDto.setName(employee.getName());
+            employeeDto.setAge(employee.getAge());
+            employeeDto.concat();
+            employeeDtoList.add(employeeDto);
+        }
+        return employeeDtoList;
+    }
 
-    public EmployeeDTO getEmployeeWithDesc(String id){
-        Employee employee = employeeMapper.selectOne(id);
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        String desc = String.format("name: %s, age: %s", employee.getName()+employee.getAge());
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setName(employee.getName());
-        employeeDTO.setAge(employee.getAge());
-        employeeDTO.setDesc(desc);
-
-        return employeeDTO;
+    public List<Employee> selectWithPage(Integer page, Integer pageSize) {
+        return  employeeMapper.selectWithPage((page - 1)*pageSize,pageSize);
     }
 }

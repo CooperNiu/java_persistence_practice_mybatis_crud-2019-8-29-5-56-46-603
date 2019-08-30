@@ -3,9 +3,10 @@ package tws.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tws.dto.EmployeeDTO;
+import tws.dto.EmployeeDto;
 import tws.entity.Employee;
 import tws.repository.EmployeeMapper;
+import tws.service.EmployeeService;
 
 import java.net.URI;
 import java.util.List;
@@ -15,52 +16,46 @@ import java.util.UUID;
 @RequestMapping("/employees")
 public class EmployeeController {
 
+    @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
+    private EmployeeService employeeService;
 
-    @GetMapping("")
-    public ResponseEntity<List<Employee>> getAll() {
-        return ResponseEntity.ok(employeeMapper.selectAll());
-    }
-
-    @PostMapping()
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        String id = UUID.randomUUID().toString();
-        employee.setId(id);
-        employeeMapper.addEmployee(employee);
-        return ResponseEntity.created(URI.create("/employees" + id)).build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> getOne(@PathVariable String id) {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        Employee employee = employeeMapper.selectOne(id);
-        employeeDTO.setDesc(employee.getName() + employee.getName());
-        return ResponseEntity.ok(employeeDTO);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateOne(
-            @PathVariable String id,
-            @RequestBody Employee employee
-    ) {
-        employeeMapper.updateOne(id, employee);
-        return ResponseEntity.ok(employee);
-    }
+//    @GetMapping()
+//    public ResponseEntity<List<Employee>> queryEmployees (@RequestParam(required = false) String id ,@RequestParam(required = false) String name) {
+//        List<Employee> list = employeeMapper.selectSome(id,name);
+//        return ResponseEntity.ok(list);
+//    }
+//
+//    @GetMapping()
+//    public ResponseEntity<List<EmployeeDto>> queryEmployeesDto (@RequestParam(required = false) String id , @RequestParam(required = false) String name) {
+//        List<EmployeeDto> list = employeeService.selectSome(id,name);
+//        return ResponseEntity.ok(list);
+//    }
+//
+//    @PutMapping("")
+//    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+//        employeeMapper.updateOne(employee);
+//        return ResponseEntity.ok(employee);
+//    }
+//
+//    @DeleteMapping("")
+//    public ResponseEntity<String> deleteEmployee(@RequestParam String id) {
+//        employeeMapper.deleteOne(id);
+//        return ResponseEntity.ok(id);
+//    }
 
     @PostMapping("")
-    public ResponseEntity<Employee> insert(@RequestBody Employee employee) {
-        String id = UUID.randomUUID().toString();
-        employee.setId(id);
-        employeeMapper.insert(employee);
-
-        return ResponseEntity.created(URI.create("/employees" + id)).build();
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        employee.setId(UUID.randomUUID().toString());
+        employeeMapper.addEmploy(employee);
+        return ResponseEntity.created(URI.create(URI.create("/employees")+employee.getId())).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Employee> delete(@PathVariable String id) {
-        employeeMapper.deleteOne(id);
-
-        return ResponseEntity.ok().build();
+    @GetMapping("/page")
+    public ResponseEntity<List<Employee>> queryEmployeesWithPage (@RequestParam Integer page ,@RequestParam Integer pageSize) {
+        List<Employee> list = employeeService.selectWithPage(page,pageSize);
+        return ResponseEntity.ok(list);
     }
 
 }
