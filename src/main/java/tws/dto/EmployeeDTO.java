@@ -1,17 +1,27 @@
-package tws.entity;
+package tws.dto;
 
 import java.io.Serializable;
 
-public class Employee implements Serializable {
+public class EmployeeDTO {
     private String id;
     private String name;
     private String age;
 
-    public Employee() {
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    private String desc;
+
+    public EmployeeDTO() {
 
     }
 
-    public Employee(String id, String name, String age) {
+    public EmployeeDTO(String id, String name, String age) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -43,10 +53,13 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "EmployeeDTO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
+                ", desc='" + desc + '\'' +
                 '}';
     }
+
+
 }
